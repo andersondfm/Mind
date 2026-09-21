@@ -276,17 +276,22 @@ textarea {
   cursor: grabbing;
 }
 
-.catalog-swatch {
-  width: 34px;
-  height: 26px;
-  border-radius: 6px;
+.icon-tile {
   display: grid;
   place-items: center;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #101318;
   flex: none;
+  border-radius: 7px;
+}
+
+.icon-tile-sm {
+  width: 30px;
+  height: 26px;
+}
+
+.icon-tile-md {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
 }
 
 .empty-search,
@@ -362,16 +367,6 @@ textarea {
   margin-top: 6px;
 }
 
-.arch-node-mark {
-  width: 40px;
-  height: 40px;
-  border-radius: 9px;
-  display: grid;
-  place-items: center;
-  font-size: 11px;
-  font-weight: 700;
-  flex: none;
-}
 
 .arch-node-copy {
   min-width: 0;

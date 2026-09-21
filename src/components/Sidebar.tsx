@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { CATALOG, CATEGORIES } from '../catalog'
-import { contrastText } from '../color'
+import { IconTile } from '../icons/IconTile'
 import type { CatalogItem, CategoryId } from '../types'
 
 type SidebarProps = {
@@ -95,6 +95,10 @@ export function Sidebar({ onDragItem, onAddItem }: SidebarProps) {
                           JSON.stringify(item),
                         )
                         event.dataTransfer.effectAllowed = 'move'
+                        const tile = event.currentTarget.querySelector('.icon-tile')
+                        if (tile instanceof HTMLElement) {
+                          event.dataTransfer.setDragImage(tile, 16, 16)
+                        }
                         onDragItem(item)
                       }}
                       onDragEnd={() => {
@@ -103,15 +107,7 @@ export function Sidebar({ onDragItem, onAddItem }: SidebarProps) {
                         }, 0)
                       }}
                     >
-                      <span
-                        className="catalog-swatch"
-                        style={{
-                          background: item.color,
-                          color: contrastText(item.color),
-                        }}
-                      >
-                        {item.initials}
-                      </span>
+                      <IconTile id={item.id} color={item.color} />
                       <span>{item.name}</span>
                     </button>
                   </li>
