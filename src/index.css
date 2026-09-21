@@ -1,4 +1,5 @@
-:root {
+:root,
+[data-theme='dark'] {
   --ink: #0c0e13;
   --panel: #12151c;
   --panel-2: #181c26;
@@ -8,7 +9,40 @@
   --accent: #4ea1ff;
   --danger: #f07178;
   --node: #1b2130;
+  --board: #10141c;
+  --node-border: #323b4e;
+  --handle-border: #10141c;
+  --grid: #2a3344;
+  --edge: #8b97ab;
+  --status-done-bg: #14241c;
+  --status-wip-bg: #242114;
+  --status-debt-bg: #261418;
+  --minimap-mask: rgba(8, 10, 14, 0.72);
   --sans: 'Outfit', system-ui, sans-serif;
+  --font-scale: 1;
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --ink: #f3f5f8;
+  --panel: #ffffff;
+  --panel-2: #eef1f6;
+  --line: #d4dbe4;
+  --text: #1a2130;
+  --muted: #5c6678;
+  --accent: #1f6feb;
+  --danger: #c43c4a;
+  --node: #ffffff;
+  --board: #eef2f6;
+  --node-border: #c9d2de;
+  --handle-border: #eef2f6;
+  --grid: #c5ced8;
+  --edge: #6b7688;
+  --status-done-bg: #e7f6ee;
+  --status-wip-bg: #f8f1d4;
+  --status-debt-bg: #f8e6e8;
+  --minimap-mask: rgba(255, 255, 255, 0.62);
+  color-scheme: light;
 }
 
 * {
@@ -25,6 +59,7 @@ body,
 
 body {
   font-family: var(--sans);
+  font-size: calc(14px * var(--font-scale));
   color: var(--text);
   background: var(--ink);
   overflow: hidden;
@@ -125,6 +160,13 @@ textarea {
   margin-left: auto;
   display: flex;
   gap: 8px;
+  align-items: center;
+}
+
+.toolbar-look {
+  display: flex;
+  gap: 6px;
+  margin-right: 4px;
 }
 
 .toolbar-actions button,
@@ -243,7 +285,7 @@ textarea {
 
 .catalog-toggle em {
   font-style: normal;
-  color: #5d6778;
+  color: var(--muted);
 }
 
 .catalog-group ul {
@@ -304,7 +346,7 @@ textarea {
 .board {
   position: relative;
   min-width: 0;
-  background: #10141c;
+  background: var(--board);
 }
 
 .empty-board {
@@ -345,7 +387,7 @@ textarea {
   align-items: flex-start;
   gap: 10px;
   background: var(--node);
-  border: 1px solid #323b4e;
+  border: 1px solid var(--node-border);
   border-radius: 12px;
   padding: 8px 10px;
   box-sizing: border-box;
@@ -356,7 +398,7 @@ textarea {
 }
 
 .arch-node.is-text .arch-node-copy strong {
-  font-size: 15px;
+  font-size: calc(15px * var(--font-scale));
   white-space: normal;
 }
 
@@ -366,17 +408,17 @@ textarea {
 
 .arch-node.status-done {
   border-color: #3dd68c;
-  background: #14241c;
+  background: var(--status-done-bg);
 }
 
 .arch-node.status-wip {
   border-color: #e8c547;
-  background: #242114;
+  background: var(--status-wip-bg);
 }
 
 .arch-node.status-debt {
   border-color: #e35d6a;
-  background: #261418;
+  background: var(--status-debt-bg);
 }
 
 .status-picks,
@@ -419,8 +461,8 @@ textarea {
 
 .arch-inline {
   width: 100%;
-  border: 1px solid #323b4e;
-  background: #10141c;
+  border: 1px solid var(--node-border);
+  background: var(--ink);
   color: var(--text);
   border-radius: 6px;
   padding: 5px 7px;
@@ -442,7 +484,7 @@ textarea {
 
 .arch-node-copy strong {
   display: block;
-  font-size: 13px;
+  font-size: calc(13px * var(--font-scale));
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -452,7 +494,7 @@ textarea {
 .arch-node-copy p {
   margin: 3px 0 0;
   color: var(--muted);
-  font-size: 11px;
+  font-size: calc(11px * var(--font-scale));
   line-height: 1.35;
   overflow: hidden;
 }
@@ -466,16 +508,16 @@ textarea {
   width: 11px;
   height: 11px;
   background: #9aa8be;
-  border: 2px solid #10141c;
+  border: 2px solid var(--handle-border);
 }
 
 .react-flow__edge-text {
   fill: var(--text);
-  font-size: 11px;
+  font-size: calc(11px * var(--font-scale));
 }
 
 .react-flow__edge-textbg {
-  fill: #10141c;
+  fill: var(--board);
 }
 
 .react-flow__controls {

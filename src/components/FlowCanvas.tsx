@@ -13,8 +13,15 @@ import {
   type Edge,
   type Node,
 } from '@xyflow/react'
-import { useCallback, useEffect, useMemo, useRef, type DragEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
 import { CATALOG_BY_ID } from '../catalog'
+import {
+  applyPrefs,
+  loadPrefs,
+  nextFontScale,
+  savePrefs,
+  type Prefs,
+} from '../prefs'
 import { downloadJson, loadDiagram, saveDiagram } from '../storage'
 import type { ArchNodeData, CatalogItem } from '../types'
 import { ArchNode } from './ArchNode'
@@ -59,6 +66,11 @@ function toArchNode(item: CatalogItem, position: { x: number; y: number }): Node
 }
 
 export function FlowCanvas() {
+  const [prefs, setPrefs] = useState<Prefs>(() => {
+    const initial = loadPrefs()
+    applyPrefs(initial)
+    return initial
+  })
   const saved = useMemo(() => loadDiagram(), [])
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<ArchNodeData>>(
     saved?.nodes ?? [],
@@ -75,6 +87,29 @@ export function FlowCanvas() {
   useEffect(() => {
     saveDiagram({ nodes, edges })
   }, [nodes, edges])
+
+  useEffect(() => {
+    applyPrefs(prefs)
+    savePrefs(prefs)
+  }, [prefs])
+
+  useEffect(() => {
+    const color = prefs.theme === 'light' ? '#6b7688' : '#8b97ab'
+    setEdges((current) =>
+      current.map((edge) => ({
+        ...edge,
+        style: { ...edge.style, stroke: color },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color,
+          width: 16,
+          height: 16,
+        },
+      })),
+    )
+  }, [prefs.theme, setEdges])
+
+  const edgeColor = prefs.theme === 'light' ? '#6b7688' : '#8b97ab'
 
   const onConnect = useCallback(
     (connection: Connection) => {
@@ -211,10 +246,23 @@ export function FlowCanvas() {
       <Toolbar
         nodeCount={nodes.length}
         edgeCount={edges.length}
+        theme={prefs.theme}
         onFit={() => fitView({ padding: 0.2 })}
         onClear={clearBoard}
         onExport={() => downloadJson({ nodes, edges })}
         onImport={importFile}
+        onToggleTheme={() =>
+          setPrefs((current) => ({
+            ...current,
+            theme: current.theme === 'light' ? 'dark' : 'light',
+          }))
+        }
+        onFont={(direction) =>
+          setPrefs((current) => ({
+            ...current,
+            fontScale: nextFontScale(current.fontScale, direction),
+          }))
+        }
       />
       <div className="workspace-body">
         <Sidebar
@@ -233,9 +281,18 @@ export function FlowCanvas() {
             onDrop={onDrop}
             onDragOver={onDragOver}
             nodeTypes={nodeTypes}
-            defaultEdgeOptions={defaultEdgeOptions}
+            defaultEdgeOptions={{
+              ...defaultEdgeOptions,
+              style: { stroke: edgeColor, strokeWidth: 1.7 },
+              markerEnd: {
+                type: MarkerType.ArrowClosed,
+                color: edgeColor,
+                width: 16,
+                height: 16,
+              },
+            }}
             fitView
-            colorMode="dark"
+            colorMode={prefs.theme}
             deleteKeyCode={['Backspace', 'Delete']}
             connectionLineStyle={{ stroke: '#5aa7ff', strokeWidth: 1.6 }}
           >
@@ -243,7 +300,7 @@ export function FlowCanvas() {
               variant={BackgroundVariant.Dots}
               gap={22}
               size={1.2}
-              color="#2a3344"
+              color={prefs.theme === 'light' ? '#c5ced8' : '#2a3344'}
             />
             <Controls showInteractive={false} />
             <MiniMap
@@ -256,7 +313,11 @@ export function FlowCanvas() {
                 if (data.status === 'debt') return '#e35d6a'
                 return data.color
               }}
-              maskColor="rgba(8, 10, 14, 0.72)"
+              maskColor={
+                prefs.theme === 'light'
+                  ? 'rgba(255, 255, 255, 0.62)'
+                  : 'rgba(8, 10, 14, 0.72)'
+              }
             />
           </ReactFlow>
           {nodes.length === 0 ? (

@@ -1,19 +1,27 @@
+import type { Theme } from '../prefs'
+
 type ToolbarProps = {
   nodeCount: number
   edgeCount: number
+  theme: Theme
   onFit: () => void
   onClear: () => void
   onExport: () => void
   onImport: (file: File) => void
+  onToggleTheme: () => void
+  onFont: (direction: 'up' | 'down') => void
 }
 
 export function Toolbar({
   nodeCount,
   edgeCount,
+  theme,
   onFit,
   onClear,
   onExport,
   onImport,
+  onToggleTheme,
+  onFont,
 }: ToolbarProps) {
   return (
     <header className="toolbar">
@@ -33,6 +41,21 @@ export function Toolbar({
       </p>
 
       <div className="toolbar-actions">
+        <div className="toolbar-look">
+          <button type="button" onClick={() => onFont('down')} title="Diminuir fonte">
+            A-
+          </button>
+          <button type="button" onClick={() => onFont('up')} title="Aumentar fonte">
+            A+
+          </button>
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            title={theme === 'light' ? 'Usar tema escuro' : 'Usar tema claro'}
+          >
+            {theme === 'light' ? 'Escuro' : 'Claro'}
+          </button>
+        </div>
         <button type="button" onClick={onFit}>
           Enquadrar
         </button>
