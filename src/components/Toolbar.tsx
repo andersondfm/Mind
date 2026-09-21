@@ -7,9 +7,11 @@ type ToolbarProps = {
   onFit: () => void
   onClear: () => void
   onExport: () => void
+  onExportPdf: () => void
   onImport: (file: File) => void
   onToggleTheme: () => void
   onFont: (direction: 'up' | 'down') => void
+  exportingPdf?: boolean
 }
 
 export function Toolbar({
@@ -19,9 +21,11 @@ export function Toolbar({
   onFit,
   onClear,
   onExport,
+  onExportPdf,
   onImport,
   onToggleTheme,
   onFont,
+  exportingPdf = false,
 }: ToolbarProps) {
   return (
     <header className="toolbar">
@@ -42,10 +46,10 @@ export function Toolbar({
 
       <div className="toolbar-actions">
         <div className="toolbar-look">
-          <button type="button" onClick={() => onFont('down')} title="Diminuir fonte">
+          <button type="button" onClick={() => onFont('down')} title="Diminuir fonte das caixas">
             A-
           </button>
-          <button type="button" onClick={() => onFont('up')} title="Aumentar fonte">
+          <button type="button" onClick={() => onFont('up')} title="Aumentar fonte das caixas">
             A+
           </button>
           <button
@@ -73,6 +77,9 @@ export function Toolbar({
         </label>
         <button type="button" onClick={onExport}>
           Exportar JSON
+        </button>
+        <button type="button" onClick={onExportPdf} disabled={exportingPdf}>
+          {exportingPdf ? 'Gerando PDF…' : 'Exportar PDF'}
         </button>
         <button type="button" className="ghost" onClick={onClear}>
           Limpar

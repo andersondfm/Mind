@@ -22,6 +22,7 @@ import {
   savePrefs,
   type Prefs,
 } from '../prefs'
+import { downloadPdf } from '../exportPdf'
 import { downloadJson, loadDiagram, saveDiagram } from '../storage'
 import type { ArchNodeData, CatalogItem } from '../types'
 import { ArchNode } from './ArchNode'
@@ -79,6 +80,7 @@ export function FlowCanvas() {
   const { screenToFlowPosition, fitView } = useReactFlow()
   const selectedItem = useRef<CatalogItem | null>(null)
   const boardRef = useRef<HTMLDivElement>(null)
+  const [exportingPdf, setExportingPdf] = useState(false)
   const selectedNode = nodes.find((node) => node.selected) ?? null
   const selectedEdge = selectedNode
     ? null
@@ -250,7 +252,16 @@ export function FlowCanvas() {
         onFit={() => fitView({ padding: 0.2 })}
         onClear={clearBoard}
         onExport={() => downloadJson({ nodes, edges })}
+        onExportPdf={() => {
+          setExportingPdf(true)
+          void downloadPdf(nodes)
+            .catch(() => {
+              window.alert('Não foi possível gerar o PDF.')
+            })
+            .finally(() => setExportingPdf(false))
+        }}
         onImport={importFile}
+        exportingPdf={exportingPdf}
         onToggleTheme={() =>
           setPrefs((current) => ({
             ...current,

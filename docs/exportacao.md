@@ -2,6 +2,16 @@
 
 O MIND troca arquitetura por um arquivo **JSON**. Você desenha, exporta, envia o arquivo e a outra pessoa importa no MIND dela. Não precisa de conta nem de servidor.
 
+Para mandar só a imagem do desenho (e-mail, apresentação, impressão), use **Exportar PDF**. Esse arquivo não volta para a lousa — quem quiser editar precisa do JSON.
+
+## Exportar PDF
+
+1. Abra o desenho no MIND.
+2. No topo, clique em **Exportar PDF**.
+3. O navegador baixa `mind-arquitetura-AAAA-MM-DD.pdf` com a lousa (caixas, textos e links), sem a paleta lateral nem a barra de ferramentas.
+
+O PDF é uma foto do desenho. Não dá para importar de volta no MIND.
+
 ## Passar para um terceiro
 
 1. Abra o desenho no MIND.
@@ -151,7 +161,7 @@ Salve como `.json` e use **Importar**.
 
 - O desenho do dia a dia fica no navegador (`localStorage`). Exportar é o jeito de **levar** o arquivo para outra máquina ou outra pessoa.
 - Importar **troca** a lousa inteira. Não junta com o que já estava aberto.
-- O terceiro precisa do MIND aberto (mesmo site ou mesma instalação). O JSON sozinho não vira imagem.
+- O terceiro precisa do MIND aberto (mesmo site ou mesma instalação). O JSON sozinho não vira imagem. Para só visualizar ou imprimir, use **Exportar PDF**.
 - `catalogId` precisa ser um item que o MIND conhece (`react`, `nodejs`, `s3`, `aks`…). Se o id não existir, o card aparece, mas o ícone pode cair no desenho genérico.
 - Pode mandar vários arquivos: um por sistema, por ambiente ou por versão.
 
