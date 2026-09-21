@@ -67,6 +67,15 @@ function filled(c: string, children: ReactNode, size: number) {
 }
 
 const SHAPES: Record<string, (c: string, size: number) => ReactNode> = {
+  textbox: (c, s) =>
+    stroke(
+      c,
+      <>
+        <rect x="4" y="4" width="16" height="16" rx="2" />
+        <path d="M8 9h8M8 12h8M8 15h5" />
+      </>,
+      s,
+    ),
   users: (c, s) =>
     stroke(
       c,

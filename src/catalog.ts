@@ -23,6 +23,7 @@ function item(
 }
 
 export const CATALOG: CatalogItem[] = [
+  item('textbox', 'Caixa de texto', 'architecture', '#c9d4e5', 'TXT'),
   item('users', 'Usuários', 'architecture', '#5b8def', 'USR'),
   item('browser', 'Browser', 'architecture', '#6aa9ff', 'WEB'),
   item('mobile', 'App Mobile', 'architecture', '#3dd6c6', 'MOB'),

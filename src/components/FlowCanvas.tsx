@@ -40,17 +40,20 @@ function nextId(prefix: string) {
 }
 
 function toArchNode(item: CatalogItem, position: { x: number; y: number }): Node<ArchNodeData> {
+  const isText = item.id === 'textbox'
   return {
     id: nextId('n'),
     type: 'arch',
     position,
+    style: isText ? { width: 260, height: 120 } : { width: 200, height: 72 },
     data: {
       catalogId: item.id,
-      label: item.name,
+      label: isText ? '' : item.name,
       note: '',
       color: item.color,
       initials: item.initials,
       category: item.category,
+      status: 'none',
     },
   }
 }
@@ -153,6 +156,25 @@ export function FlowCanvas() {
     )
   }
 
+  function resizeNode(id: string, direction: 'up' | 'down') {
+    const factor = direction === 'up' ? 1.18 : 0.85
+    setNodes((current) =>
+      current.map((node) => {
+        if (node.id !== id) return node
+        const width = Number(node.style?.width) || 200
+        const height = Number(node.style?.height) || 72
+        return {
+          ...node,
+          style: {
+            ...node.style,
+            width: Math.min(560, Math.max(140, Math.round(width * factor))),
+            height: Math.min(380, Math.max(56, Math.round(height * factor))),
+          },
+        }
+      }),
+    )
+  }
+
   function changeEdge(id: string, label: string) {
     setEdges((current) =>
       current.map((edge) => (edge.id === id ? { ...edge, label } : edge)),
@@ -227,7 +249,13 @@ export function FlowCanvas() {
             <MiniMap
               pannable
               zoomable
-              nodeColor={(node) => (node.data as ArchNodeData).color}
+              nodeColor={(node) => {
+                const data = node.data as ArchNodeData
+                if (data.status === 'done') return '#3dd68c'
+                if (data.status === 'wip') return '#e8c547'
+                if (data.status === 'debt') return '#e35d6a'
+                return data.color
+              }}
               maskColor="rgba(8, 10, 14, 0.72)"
             />
           </ReactFlow>
@@ -246,6 +274,7 @@ export function FlowCanvas() {
               edge={selectedEdge}
               onChangeNode={changeNode}
               onChangeEdge={changeEdge}
+              onResizeNode={resizeNode}
               onDelete={removeSelected}
             />
           ) : null}
