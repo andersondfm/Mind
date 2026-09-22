@@ -97,10 +97,14 @@ export function FlowCanvas() {
 
   useEffect(() => {
     const color = prefs.theme === 'light' ? '#6b7688' : '#8b97ab'
+    const labelFill = prefs.theme === 'light' ? '#1a2130' : '#e8edf5'
+    const labelBg = prefs.theme === 'light' ? '#eef2f6' : '#10141c'
     setEdges((current) =>
       current.map((edge) => ({
         ...edge,
         style: { ...edge.style, stroke: color },
+        labelStyle: { ...edge.labelStyle, fill: labelFill, fontSize: 11 },
+        labelBgStyle: { ...edge.labelBgStyle, fill: labelBg },
         markerEnd: {
           type: MarkerType.ArrowClosed,
           color,
@@ -112,6 +116,8 @@ export function FlowCanvas() {
   }, [prefs.theme, setEdges])
 
   const edgeColor = prefs.theme === 'light' ? '#6b7688' : '#8b97ab'
+  const edgeLabelFill = prefs.theme === 'light' ? '#1a2130' : '#e8edf5'
+  const edgeLabelBg = prefs.theme === 'light' ? '#eef2f6' : '#10141c'
 
   const onConnect = useCallback(
     (connection: Connection) => {
@@ -295,6 +301,8 @@ export function FlowCanvas() {
             defaultEdgeOptions={{
               ...defaultEdgeOptions,
               style: { stroke: edgeColor, strokeWidth: 1.7 },
+              labelStyle: { fill: edgeLabelFill, fontSize: 11 },
+              labelBgStyle: { fill: edgeLabelBg },
               markerEnd: {
                 type: MarkerType.ArrowClosed,
                 color: edgeColor,
