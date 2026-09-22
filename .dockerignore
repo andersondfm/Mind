@@ -7,3 +7,6 @@ dist
 .idea
 *.log
 .DS_Store
+docker-up.ps1
+docker-up.cmd
+docker-compose.yml

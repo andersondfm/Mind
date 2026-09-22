@@ -1,0 +1,8 @@
+services:
+  mind:
+    build: .
+    image: mind
+    container_name: mind
+    ports:
+      - "8080:80"
+    restart: unless-stopped
